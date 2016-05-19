@@ -23,26 +23,20 @@ if(isset($_GET['id']) && (int)$_GET['id'] > 0){#proper data must be on querystri
     header('Location:' . VIRTUAL_PATH . 'surveys/index.php'); 
 }
 
-//sql statement to select individual item
-$sql = "select Title,Description from sp16_surveys where SurveyID = " . $myID;
+// sql statement to select individual item
+// $sql = "select Title,Description from sp16_surveys where SurveyID = " . $myID;
 //---end config area --------------------------------------------------
 
 $foundRecord = FALSE; # Will change to true, if record found!
+
    
-# connection comes first in mysqli (improved) function
-$result = mysqli_query(IDB::conn(),$sql) or die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
+// Create class here. This was the DB info. 
 
-if(mysqli_num_rows($result) > 0)
-{#records exist - process
-	   $foundRecord = TRUE;	
-	   while ($row = mysqli_fetch_assoc($result))
-	   {
-			$Title = dbOut($row['Title']);
-			$Description = dbOut($row['Description']);
-	   }
-}
+$mySurvey = new Survey($myID);
 
-@mysqli_free_result($result); # We're done with the data!
+dumpDie($mySurvey); 
+    
+    
 
 if($foundRecord)
 {#only load data if record found
@@ -83,4 +77,43 @@ if($foundRecord)
 echo '<div align="center"><a href="' . VIRTUAL_PATH . 'surveys/index.php">Back</a></div>';
 
 get_footer(); #defaults to theme footer or footer_inc.php
-?>
+
+
+class Survey { // This is our Survey Class.
+// How is the page driven? The class is driven by this same info.     
+    
+    public $Title = '';         // Assign a neutral blank variable to prevent problems. 
+    public $Description = '';   // Assign a neutral blank variable to prevent problems. 
+    public $SurveyID = 0;       // Not a normal Primary Key number. 
+    public $isValid = false;    // False by default; must prove that there's good data. 
+    // Set it to 0, to ensure that we don't get a good survey by accident. 
+    
+    // This is getting a row from the Surveys db. 
+    // The one unique field? The ID. 
+    function __construct($id){
+        
+        // Forcibly cast the data to an int. Strings get turned to 0. 
+        $id = (int)$id; 
+        
+        // SQL statement to select individual survey item. 
+        $sql = "select Title,Description from sp16_surveys where SurveyID = " . $id;
+        
+        # connection comes first in mysqli (improved) function
+            $result = mysqli_query(IDB::conn(),$sql) or 
+    die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
+
+        if(mysqli_num_rows($result) > 0)
+        {#records exist - process
+	       $this->isValid = true; // Survey exists. 	
+	       while ($row = mysqli_fetch_assoc($result))
+	       {
+			 $this->Title = dbOut($row['Title']);
+			 $this->Description = dbOut($row['Description']);
+	       }
+        }
+
+        @mysqli_free_result($result); # We're done with the data!
+
+    }// end Survey Constructor. 
+    
+}// end Survey Class. 
