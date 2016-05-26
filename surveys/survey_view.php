@@ -27,6 +27,8 @@ if(isset($_GET['id']) && (int)$_GET['id'] > 0){#proper data must be on querystri
 // $sql = "select Title,Description from sp16_surveys where SurveyID = " . $myID;
 //---end config area --------------------------------------------------
 
+
+
 $foundRecord = FALSE; # Will change to true, if record found!
 
    
@@ -86,11 +88,12 @@ class Survey { // This is our Survey Class.
     public $Description = '';   // Assign a neutral blank variable to prevent problems. 
     public $SurveyID = 0;       // Not a normal Primary Key number. 
     public $isValid = false;    // False by default; must prove that there's good data. 
-    // Set it to 0, to ensure that we don't get a good survey by accident. 
+    // Set SurveyID to 0, to ensure that we don't get a good survey by accident. 
+    public $Questions = array(); 
     
     // This is getting a row from the Surveys db. 
     // The one unique field? The ID. 
-    function __construct($id){
+    public function __construct($id){
         
         // Forcibly cast the data to an int. Strings get turned to 0. 
         $id = (int)$id; 
@@ -113,7 +116,51 @@ class Survey { // This is our Survey Class.
         }
 
         @mysqli_free_result($result); # We're done with the data!
+        
+    // Add Question Objects Here.     
+    
+        $sql = "select QuestionID, Question, Description from sp16_questions where SurveyID = " . $id;
+        
+        # connection comes first in mysqli (improved) function
+            $result = mysqli_query(IDB::conn(),$sql) or 
+    die(trigger_error(mysqli_error(IDB::conn()), E_USER_ERROR));
+
+        if(mysqli_num_rows($result) > 0)
+        {#records exist - process
+	       $this->isValid = true; // Survey exists. 	
+	       while ($row = mysqli_fetch_assoc($result))
+	       {
+			 // $this->Title = dbOut($row['Title']);
+			 // $this->Description = dbOut($row['Description']);
+               $this->Questions[] = new Question(dbOut($row['QuestionID']), dbOut($row['Question']), dbOut($row['Description'])); 
+               
+               
+               
+	       }
+        }
+
+        @mysqli_free_result($result); # We're done with the data!
 
     }// end Survey Constructor. 
     
 }// end Survey Class. 
+
+// Properties can be objects, so it can store anything. A variable can store an array. 
+
+class Question{
+
+    public $QuestionID = 0; // The Primary Key for the Questions table. 
+    public $Text = ''; // This will be the question.   
+    public $Description = ''; // This will be the description of the question. 
+    
+    public function __construct($QuestionID, $Text, $Description){
+        
+        $this -> QuestionID = $QuestionID; 
+        $this -> Text = $Text;
+        $this -> Description = $Description; 
+    
+    } //End Question constructor. 
+    
+
+} // end Question Class. 
+

@@ -1,5 +1,6 @@
 <?php
 /**
+ * demo_list_pager.php along with demo_view_pager.php provides a sample web application
  * index.php works with survey_view.php to create a list/view app. 
  * 
  * @package sp16_survey-sez
