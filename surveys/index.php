@@ -80,12 +80,9 @@ if(mysqli_num_rows($result) > 0)
   <tbody>'; 
     
     
-    
-    
 	while($row = mysqli_fetch_assoc($result))
 	{# process each row
          
-        
         
         echo '<tr>
       <td><a href="' . VIRTUAL_PATH . 'surveys/survey_view.php?id=' . (int)$row['SurveyID'] . '">' . dbOut($row['Title']) . '</a></td>

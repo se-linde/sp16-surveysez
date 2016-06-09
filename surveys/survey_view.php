@@ -46,10 +46,23 @@ if($mySurvey->isValid)
 { #check to see if we have a valid SurveyID
 	echo '<p>' . $mySurvey->Description . '</p>';
 	echo $mySurvey->showQuestions();
+    
+    // Here will be a function down below that is the display? code. 
+    // Response list function, as it show's the response list. 
+    // Encapsulation! 
+    
+    echo responseList($myID); 
+    
+    
 }else{
 	echo "Sorry, no such survey!";	
 }
 
 get_footer(); #defaults to theme footer or footer_inc.php
 
+// Writing the function. 
+function responseList($myID)
+{
+    return $myID; 
 
+}
