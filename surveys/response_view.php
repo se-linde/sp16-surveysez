@@ -28,6 +28,21 @@ if(isset($_GET['id']) && (int)$_GET['id'] > 0){#proper data must be on querystri
 # currently 'hard wired' to one response - will need to pass in #id of a Response on the qstring  
 
 $myResponse = new SurveySez\Response($myID);
+
+if($myResponse->isValid)
+{
+	$PageTitle = $myResponse->Title . " Survey Response!";
+}else{
+	$PageTitle = THIS_PAGE; #use constant 
+}
+
+$config->titleTag = $PageTitle;
+#END CONFIG AREA ---------------------------------------------------------- 
+
+get_header(); # defaults to header_inc.php
+?>
+<h2><?=THIS_PAGE;?></h2>
+
 <?php
 
 if($myResponse->isValid)
