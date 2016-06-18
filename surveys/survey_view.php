@@ -27,12 +27,17 @@ if(isset($_GET['id']) && (int)$_GET['id'] > 0){#proper data must be on querystri
 	myRedirect(VIRTUAL_PATH . "surveys/index.php");
 }
 
+<<<<<<< HEAD
 $mySurvey = new SurveySez\MY_Survey($myID); //MY_Survey extends survey class so methods can be added
+=======
+$mySurvey = new SurveySez\Survey($myID); //MY_Survey extends survey class so methods can be added
+>>>>>>> origin/master
 if($mySurvey->isValid)
 {
 	$config->titleTag = "'" . $mySurvey->Title . "' Survey!";
 }else{
 	$config->titleTag = smartTitle(); //use constant 
+<<<<<<< HEAD
 }
 #END CONFIG AREA ---------------------------------------------------------- 
 
@@ -71,3 +76,38 @@ function responseList($myID)
 
 
 
+=======
+}
+#END CONFIG AREA ---------------------------------------------------------- 
+
+get_header(); #defaults to theme header or header_inc.php
+?>
+<h3><?=$mySurvey->Title;?></h3>
+
+<?php
+
+if($mySurvey->isValid)
+{ #check to see if we have a valid SurveyID
+	echo '<p>' . $mySurvey->Description . '</p>';
+	echo $mySurvey->showQuestions();
+    
+    // Here will be a function down below that is the display? code. 
+    // Response list function, as it show's the response list. 
+    // Encapsulation! 
+    
+    echo responseList($myID); 
+    
+    
+}else{
+	echo "Sorry, no such survey!";	
+}
+
+get_footer(); #defaults to theme footer or footer_inc.php
+
+// Writing the function. 
+function responseList($myID)
+{
+    return $myID; 
+
+}
+>>>>>>> origin/master
