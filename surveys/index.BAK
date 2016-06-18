@@ -17,11 +17,7 @@
 require '../inc_0700/config_inc.php'; #provides configuration, pathing, error handling, db credentials 
  
 # SQL statement
-// $sql = "select Title, SurveyID from sp16_surveys";
-
-$sql = "select CONCAT(a.FirstName, ' ', a.LastName) AdminName, s.SurveyID, s.Title, s.Description, 
-date_format(s.DateAdded, '%W %D %M %Y %H:%i') 'DateAdded' from "
-. PREFIX . "surveys s, " . PREFIX . "Admin a where s.AdminID=a.AdminID order by s.DateAdded desc";
+$sql = "select Title, SurveyID from sp16_surveys";
 
 #Fills <title> tag. If left empty will default to $PageTitle in config_inc.php  
 $config->titleTag = 'Surveys made with love & PHP in Seattle';
@@ -66,38 +62,11 @@ if(mysqli_num_rows($result) > 0)
 {#records exist - process
 	if($myPager->showTotal()==1){$itemz = "survey";}else{$itemz = "surveys";}  //deal with plural
     echo '<div align="center">We have ' . $myPager->showTotal() . ' ' . $itemz . '!</div>';
-    
-    
-    
-    echo '<table class="table table-striped table-hover ">
-  <thead>
-    <tr>
-      <th>Title - this goes into the loop.</th>
-      <th>Creator - the loop gets generated dynamically.</th>
-      <th>Date Created - the data gets put in from the loop. </th>
-    </tr>
-  </thead>
-  <tbody>'; 
-    
-    
-    
-    
 	while($row = mysqli_fetch_assoc($result))
 	{# process each row
-         
-        
-        
-        echo '<tr>
-      <td><a href="' . VIRTUAL_PATH . 'surveys/survey_view.php?id=' . (int)$row['SurveyID'] . '">' . dbOut($row['Title']) . '</a></td>
-      <td>' . dbOut($row['AdminName']) . '</td>
-      <td>' . dbOut($row['DateAdded']) . '</td> 
-    </tr>'; 
+         echo '<div align="center"><a href="' . VIRTUAL_PATH . 'surveys/survey_view.php?id=' . (int)$row['SurveyID'] . '">' . dbOut($row['Title']) . '</a>';
+         echo '</div>';
 	}
-    
-    echo '</tbody>
-        </table>'; 
-    
-    
 	echo $myPager->showNAV(); # show paging nav, only if enough records	 
 }else{#no records
     echo "<div align=center>There are currently no surveys!</div>";	

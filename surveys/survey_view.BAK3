@@ -27,7 +27,7 @@ if(isset($_GET['id']) && (int)$_GET['id'] > 0){#proper data must be on querystri
 	myRedirect(VIRTUAL_PATH . "surveys/index.php");
 }
 
-$mySurvey = new SurveySez\MY_Survey($myID); //MY_Survey extends survey class so methods can be added
+$mySurvey = new SurveySez\Survey($myID); //MY_Survey extends survey class so methods can be added
 if($mySurvey->isValid)
 {
 	$config->titleTag = "'" . $mySurvey->Title . "' Survey!";
@@ -44,30 +44,27 @@ get_header(); #defaults to theme header or header_inc.php
 
 if($mySurvey->isValid)
 { #check to see if we have a valid SurveyID
-	echo '<p class="text-muted">' . $mySurvey->Description . '</p>';
+	echo '<p>' . $mySurvey->Description . '</p>';
 	echo $mySurvey->showQuestions();
     
-	//Accesses a static function tacked on the namespaced class
-	//in the initial version, passes back the ID only (must be updated)
-    echo SurveySez\MY_Survey::responseList($myID);
+    // Here will be a function down below that is the display? code. 
+    // Response list function, as it show's the response list. 
+    // Encapsulation! 
+    
+    echo responseList($myID); 
+    
+    
 }else{
 	echo "Sorry, no such survey!";	
 }
 
 get_footer(); #defaults to theme footer or footer_inc.php
 
-/*
+// Writing the function. 
 function responseList($myID)
 {
-   return $myID; 
+
+    return $myID; 
+
+
 }
-*/
-
-
-
-
-
-
-
-
-

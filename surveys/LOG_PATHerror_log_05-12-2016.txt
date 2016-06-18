@@ -1,0 +1,2 @@
+[May-12-2016 14:17:14] Cannot modify header information - headers already sent by (output started at /home/sarlin18/lindese.com/itc250/sp16/surveys/survey_list.php:1) in /home/sarlin18/lindese.com/itc250/sp16/inc_0700/config_inc.php on line 39
+[May-12-2016 14:17:14] Cannot modify header information - headers already sent by (output started at /home/sarlin18/lindese.com/itc250/sp16/surveys/survey_list.php:1) in /home/sarlin18/lindese.com/itc250/sp16/inc_0700/config_inc.php on line 39
